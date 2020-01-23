@@ -4,16 +4,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section scripts{
-
-
-    <script src="~/App/Controllers/LikesController.js"></script>
+    <script src="~/App/Controllers/likesScript.js"></script>
+    <script src="~/App/filters.js"></script>
 
 }
 
 <h2>Likes</h2>
 
 <body ng-app="LikesModule">
-    <div ng-controller="LikesController">
+
+    <div ng-controller="DislikesController">
+        <button ng-click="myFunc()">OK</button>
+        <p>The button has been clicked {{count}} times.</p>
         <table>
             <thead>
                 <tr>
@@ -25,7 +27,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="project in projects">
-                    <td>{{project.name}}</td>
+                    <td>{{project.name | uppercase}}</td>
                     <td>{{project.likes}}</td>
                     <td>{{project.dislikes}}</td>
                     <td>
@@ -35,6 +37,22 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div ng-controller="EmployeesController">
+        <ul>
+            <li ng-repeat="theme in themes">
+                {{theme.name}}
+                <ul>
+                    <li ng-repeat="employee in theme.employees">
+                        Name: {{employee.name}}
+                        <br />
+                        @*using custom filter*@
+                        Gender: {{employee.gender | gender}}
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
 
 

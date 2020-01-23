@@ -6,8 +6,8 @@
 }
 @section scripts{
 
-    <script src="~/App/Controllers/projectController.js"></script>
-   
+    <script src="~/App/Controllers/mainScript.js"></script>
+
 }
 <div class="jumbotron">
     <h1>ASP.NET</h1>
@@ -16,79 +16,132 @@
 </div>
 
 
-<div class="container" ng-app="projectControllerModule">
+<div class="container" ng-app="projectsModule">
+    @*ng-model - Enables two-way data binding on any input controls and sends validity of data in the input control to the enclosing form*@
+    @*ng-class: Provides an option to assign value of a model to CSS, conditionally apply styles and use multiple models for CSS declaratively*@
+    <div class="col m-5">
+        <h1>Change class functionality</h1>
+        <select ng-model="home">
+            <option value="sky">Sky</option>
+            <option value="tomato">Tomato</option>
+        </select>
+
+        <div ng-class="home">
+            <h1>Welcome Home!</h1>
+            <p>I like it!</p>
+        </div>
+
+    </div>
+
+
+    <div ng-controller="nameController" class="col m-5">
+        <h1>Display name and click button </h1>
+        <p>Hi, {{name}}</p>
+        <button ng-click="myFunc()">OK</button>
+        <p>The button has been clicked {{count}} times.</p>
+    </div>
 
     <div ng-controller="projectController">
-        <div ng-controller="Name">
-            <p>Hi, {{name}}</p>
-        </div>
-        <p>
-            @Html.ActionLink("Create New", "Create")
-        </p>
-        <table>
-            <tr>
-                <th>Project Id</th>
-                <th>Project Name</th>
-                <th>Project Description</th>
-                <th>Image</th>
-                <th>Starting date</th>
-                <th>Ending date</th>
 
-            </tr>
-            <tr ng-repeat="pr in projects">
+
+        @*Search text*@
+        <div class="row">
+            <div class="col m-5">
+                <h1>Search functionality</h1>
+                Search: <input type="text" placeholder="Search projects" ng-model="searchText.ProjectName" />
+                <br />
+
+                <table>
+                    <tr>
+                        <th>Project Id</th>
+                        <th>
+                            Project Name
+                            
+                        </th>
+                        <th>Project Description</th>
+                       
+                        
+                        <th>
+                            Starting date
+                            
+                        </th>
+                        <th>Ending date</th>
+
+                    </tr>
+                    @*Sorting columns based on the selection - ascending or descending*@
+                    @*ng-repeat: Loops through a list of items and copies the HTML for every record in the collection*@
+                    <tr ng-repeat="pr in projects | filter: searchText">
+                        <td>{{pr.ID}}</td>
+                        <td>{{pr.ProjectName}}</td>
+                        <td>{{pr.ProjectDescription}} </td>
+                      
+                        <td>{{pr.StartingDate.slice(6, -2) | date: 'dd-MM-yyyy' }}</td> <!-- As this is a Date field, we have to format-->
+                        <td>{{pr.EndingDate.slice(6, -2) | date: 'dd-MM-yyyy'}}</td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="col m-5">
+            <h1>Sort ascending and descending functionality</h1>
+
+            @*<div>
+        Order by:
+        <select ng-model="sortColumn">
+            <option value="ProjectName">Name</option>
+            <option value="EndingDate">Deadline</option>
+
+
+        </select>
+        </div>*@
+
+            @*Showing and hiding a column*@
+            <input type="checkbox" ng-model="hideDescription" /> Hide Description
+            <input type="checkbox" ng-model="hideDate" /> Hide Date
+            <br />
+            <table>
+                <tr>
+                    <th>Project Id</th>
+                    <th ng-click="sortData('ProjectName')">
+                        Project Name
+                        <div ng-class="getSortClass('ProjectName')"></div>
+                    </th>
+                    <th ng-hide="hideDescription">Project Description</th>
+                    <th>Image</th>
+                    @*ng-click: To handle click event on any element*@
+                    <th ng-click="sortData('StartingDate')">
+                        Starting date
+                        <div ng-class="getSortClass('StartingDate')"></div>
+                    </th>
+                    <th ng-hide="hideDate">Ending date</th>
+                    <th ng-show="hideDate">Ending date</th>
+
+                </tr>
+                @*Sorting columns based on the selection - ascending or descending*@
+                @*ng-repeat: Loops through a list of items and copies the HTML for every record in the collection*@
+            <tr ng-repeat="pr in projects | orderBy:sortColumn:reverseSort">
                 <td>{{pr.ID}}</td>
                 <td>{{pr.ProjectName}}</td>
-                <td>{{pr.ProjectDescription}} </td>
-                <td><img src="~/Content/Images/Project1.svg" height="50" />
-                <img ng-src="{{pr.ProjectImage}}" height="50" alt="{{pr.ProjectName }}" /> </td>
-                <td>{{pr.StartingDate.slice(6, -2) | date: 'dd-MM-yyyy'}}</td> <!-- As this is a Date field, we have to format-->
-                <td>{{pr.EndingDate.slice(6, -2) | date: 'dd-MM-yyyy'}}</td>
+                <td ng-hide="hideDescription">{{pr.ProjectDescription}} </td>
+                <td>
+                    <img src="~/Content/Images/Project1.svg" height="50" />
+                    @*ng-src: Assigns a model to source of an image element*@
+                    <img ng-src="{{pr.ProjectImage}}" height="50" alt="{{pr.ProjectName }}" />
+                </td>
+                <td>{{pr.StartingDate.slice(6, -2) | date: 'dd-MM-yyyy' }}</td> <!-- As this is a Date field, we have to format-->
+                <td ng-hide="hideDate">{{pr.EndingDate.slice(6, -2) | date: 'dd-MM-yyyy'}}</td>
+                <td ng-show="hideDate">####</td>
 
             </tr>
-        </table>
+            </table>
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+        </div>
 
 
 
-        @*<table class="table">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProjectName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProjectDescription)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.StartingDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EndingDate)
-                    </th>
-                    <th></th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectDescription)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartingDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndingDate)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                        </td>
-                    </tr>
-                }
-
-            </table>*@
     </div>
 </div>

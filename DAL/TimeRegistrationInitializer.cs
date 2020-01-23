@@ -15,9 +15,9 @@ namespace TimeRegistration.DAL
             var projects = new List<Project>
             {
             new Project{ProjectName="Umbraco",ProjectDescription="This project uses Umbraco integration",ProjectImage="~/Content/Images/Project1.svg", StartingDate=DateTime.Parse("2019-09-01"),EndingDate=DateTime.Parse("2019-12-01")},
-            new Project{ProjectName="Drupal",ProjectDescription="This project uses Drupal integration",StartingDate=DateTime.Parse("2019-09-01"),EndingDate=DateTime.Parse("2019-12-01")},
-            new Project{ProjectName="SharePoint",ProjectDescription="This project uses SharePoint integration",StartingDate=DateTime.Parse("2019-09-01"),EndingDate=DateTime.Parse("2019-12-01")},
-            new Project{ProjectName="Ghost",ProjectDescription="This project uses Ghost integration",StartingDate=DateTime.Parse("2019-09-01"),EndingDate=DateTime.Parse("2019-12-01")}
+            new Project{ProjectName="Drupal",ProjectDescription="This project uses Drupal integration",ProjectImage="~/Content/Images/Project1.svg",StartingDate=DateTime.Parse("2019-09-01"),EndingDate=DateTime.Parse("2019-12-01")},
+            new Project{ProjectName="SharePoint",ProjectDescription="This project uses SharePoint integration",ProjectImage="~/Content/Images/Project1.svg", StartingDate=DateTime.Parse("2019-09-01"),EndingDate=DateTime.Parse("2019-12-01")},
+            new Project{ProjectName="Ghost",ProjectDescription="This project uses Ghost integration",ProjectImage="~/Content/Images/Project1.svg",StartingDate=DateTime.Parse("2019-09-01"),EndingDate=DateTime.Parse("2019-12-01")}
             };
             projects.ForEach(s => context.Projects.Add(s));
             context.SaveChanges();
